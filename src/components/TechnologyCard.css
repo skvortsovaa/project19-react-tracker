@@ -1,0 +1,90 @@
+/* src/components/TechnologyCard.css */
+
+.technology-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.3s ease;   /* плавное изменение всего */
+  cursor: pointer;             /* чтобы было ясно, что кликабельно */
+}
+
+.technology-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.12);
+}
+
+.technology-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.technology-card__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.technology-card__description {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.technology-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.technology-card__status-icon {
+  font-size: 1rem;
+}
+
+/* ===== Состояния по статусу ===== */
+
+/* Не начато */
+.technology-card--not-started {
+  border-left: 4px solid #9ca3af;
+}
+
+.technology-card--not-started .technology-card__status {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+/* В процессе */
+.technology-card--in-progress {
+  border-left: 4px solid #f59e0b;
+}
+
+.technology-card--in-progress .technology-card__status {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Завершено */
+.technology-card--completed {
+  border-left: 4px solid #10b981;
+}
+
+.technology-card--completed .technology-card__status {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-not-started { border-left: 4px solid #ff6b6b; }
+.status-in-progress { border-left: 4px solid #fffb2cea; }
+.status-completed { border-left: 4px solid #45b7d1; }

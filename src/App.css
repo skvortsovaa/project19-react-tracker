@@ -1,0 +1,14 @@
+/* src/App.css */
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 16px 40px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  color: #111827;
+}
+
+.app__list {
+  margin-top: 12px;
+}
