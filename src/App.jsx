@@ -1,72 +1,56 @@
-// src/App.jsx
-import { useMemo, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-import TechnologyCard from './components/TechnologyCard';
-import ProgressHeader from './components/ProgressHeader';
-import Statistics from './components/Statistics';
-import QuickActions from './components/QuickActions';
+import Navigation from './components/Navigation';
+
+import Home from './pages/Home';
+import TechnologyList from './pages/TechnologyList';
+import TechnologyDetail from './pages/TechnologyDetail';
+import AddTechnology from './pages/AddTechnology';
+import StatisticsPage from './pages/StatisticsPage';
+import SettingsPage from './pages/SettingsPage';
 
 import useTechnologies from './hooks/useTechnologies';
 
-function App() {
+export default function App() {
   const {
     technologies,
     updateStatus,
+    setStatus,
     updateNotes,
-    markAllCompleted,
-    resetAllStatuses,
-    progress,
+    addTechnology,
+    removeTechnology,
+    resetAll,
   } = useTechnologies();
-
-  // (поиск из 21-й можно оставить — он не мешает и полезен)
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filtered = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return technologies;
-    return technologies.filter(
-      (t) =>
-        t.title.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q)
-    );
-  }, [technologies, searchQuery]);
 
   return (
     <div className="app">
-      <ProgressHeader technologies={technologies} progress={progress} />
+      <Navigation />
 
-      <Statistics technologies={technologies} />
-
-      <QuickActions
-        technologies={technologies}
-        onMarkAllCompleted={markAllCompleted}
-        onResetAll={resetAllStatuses}
-      />
-
-      <div className="search">
-        <input
-          className="search__input"
-          type="text"
-          placeholder="Поиск технологий..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <div className="search__count">Найдено: {filtered.length}</div>
-      </div>
-
-      <section className="app__list">
-        {filtered.map((tech) => (
-          <TechnologyCard
-            key={tech.id}
-            {...tech}
-            onStatusChange={updateStatus}
-            onNotesChange={updateNotes}
+      <main className="main-content" style={{maxWidth: 980, margin: '0 auto', padding: '18px 16px'}}>
+        <Routes>
+          <Route path="/" element={<Home technologies={technologies} />} />
+          <Route path="/technologies" element={<TechnologyList technologies={technologies} />} />
+          <Route
+            path="/technology/:techId"
+            element={
+              <TechnologyDetail
+                technologies={technologies}
+                setStatus={setStatus}
+                updateNotes={updateNotes}
+                removeTechnology={removeTechnology}
+              />
+            }
           />
-        ))}
-      </section>
+          <Route path="/add-technology" element={<AddTechnology addTechnology={addTechnology} />} />
+
+          {/* самостоятельная */}
+          <Route path="/statistics" element={<StatisticsPage technologies={technologies} />} />
+          <Route path="/settings" element={<SettingsPage resetAll={resetAll} />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
     </div>
   );
 }
-
-export default App;

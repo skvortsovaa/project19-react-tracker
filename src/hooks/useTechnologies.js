@@ -7,7 +7,7 @@ const initialTechnologies = [
   { id: 3, title: 'State Management', description: 'Работа с состоянием компонентов', status: 'not-started', notes: '', category: 'frontend' },
 ];
 
-const STATUS = {
+export const STATUS = {
   NOT_STARTED: 'not-started',
   IN_PROGRESS: 'in-progress',
   COMPLETED: 'completed',
@@ -22,11 +22,19 @@ function nextStatus(current) {
 export default function useTechnologies() {
   const [technologies, setTechnologies] = useLocalStorage('technologies', initialTechnologies);
 
+  // циклическая смена статуса (как было)
   const updateStatus = (techId) => {
     setTechnologies((prev) =>
       prev.map((tech) =>
         tech.id === techId ? { ...tech, status: nextStatus(tech.status) } : tech
       )
+    );
+  };
+
+  // явная установка статуса (нужно для страницы /technology/:id)
+  const setStatus = (techId, status) => {
+    setTechnologies((prev) =>
+      prev.map((tech) => (tech.id === techId ? { ...tech, status } : tech))
     );
   };
 
@@ -36,12 +44,37 @@ export default function useTechnologies() {
     );
   };
 
+  // добавление технологии (нужно для /add-technology)
+  const addTechnology = ({ title, description, category = 'frontend' }) => {
+    const newTech = {
+      id: Date.now(),
+      title: title.trim(),
+      description: description.trim(),
+      status: STATUS.NOT_STARTED,
+      notes: '',
+      category,
+    };
+    setTechnologies((prev) => [newTech, ...prev]);
+    return newTech.id;
+  };
+
+  // удаление (нужно для страницы деталей)
+  const removeTechnology = (techId) => {
+    setTechnologies((prev) => prev.filter((t) => t.id !== techId));
+  };
+
+  // как было
   const markAllCompleted = () => {
     setTechnologies((prev) => prev.map((t) => ({ ...t, status: STATUS.COMPLETED })));
   };
 
   const resetAllStatuses = () => {
     setTechnologies((prev) => prev.map((t) => ({ ...t, status: STATUS.NOT_STARTED })));
+  };
+
+  // ✅ полный сброс к исходному набору (удобно для /settings)
+  const resetAll = () => {
+    setTechnologies(initialTechnologies);
   };
 
   const calculateProgress = () => {
@@ -53,9 +86,13 @@ export default function useTechnologies() {
   return {
     technologies,
     updateStatus,
+    setStatus,
     updateNotes,
+    addTechnology,
+    removeTechnology,
     markAllCompleted,
     resetAllStatuses,
+    resetAll,
     progress: calculateProgress(),
   };
 }
