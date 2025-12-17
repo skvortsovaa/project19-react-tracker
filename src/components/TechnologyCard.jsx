@@ -1,6 +1,7 @@
 import './TechnologyCard.css';
+import TechnologyNotes from './TechnologyNotes';
 
-function TechnologyCard({ id, title, description, status, onStatusChange }) {
+function TechnologyCard({ id, title, description, status, notes, onStatusChange, onNotesChange }) {
   // Человекочитаемые подписи и иконки
   const statusLabel = {
     'completed': 'Изучено',
@@ -20,7 +21,7 @@ function TechnologyCard({ id, title, description, status, onStatusChange }) {
   return (
     <article
       className={statusClass}
-      onClick={() => onStatusChange(id)}   // ← ДОБАВЛЕН ОБРАБОТЧИК
+      onClick={() => onStatusChange(id)}
     >
       <header className="technology-card__header">
         <h3 className="technology-card__title">{title}</h3>
@@ -32,8 +33,17 @@ function TechnologyCard({ id, title, description, status, onStatusChange }) {
       </header>
 
       <p className="technology-card__description">{description}</p>
+
+      {/* ✅ Заметки (клик по textarea НЕ меняет статус) */}
+      <TechnologyNotes
+        techId={id}
+        notes={notes || ''}
+        onNotesChange={onNotesChange}
+      />
     </article>
   );
 }
 
 export default TechnologyCard;
+
+

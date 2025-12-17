@@ -12,3 +12,47 @@
 .app__list {
   margin-top: 12px;
 }
+
+.search {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.search__input {
+  min-width: 260px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.search__count {
+  opacity: 0.8;
+}
+
+/* notes */
+.notes {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.notes__title {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.notes__textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  resize: vertical;
+}
+
+.notes__hint {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
