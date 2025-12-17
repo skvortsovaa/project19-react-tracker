@@ -1,0 +1,36 @@
+.quick-actions {
+  margin: 16px 0;
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.quick-actions__title { margin: 0 0 10px; font-size: 16px; }
+
+.quick-actions__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.qa-btn {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.qa-btn--success { background: #ecfdf5; }
+.qa-btn--warning { background: #fffbeb; }
+.qa-btn--info { background: #eff6ff; }
+
+.qa-pre {
+  background: #0b1220;
+  color: #e5e7eb;
+  padding: 12px;
+  border-radius: 12px;
+  overflow: auto;
+  max-height: 260px;
+}

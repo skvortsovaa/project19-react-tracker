@@ -1,86 +1,30 @@
 // src/App.jsx
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import './App.css';
+
 import TechnologyCard from './components/TechnologyCard';
 import ProgressHeader from './components/ProgressHeader';
 import Statistics from './components/Statistics';
+import QuickActions from './components/QuickActions';
 
-const STORAGE_KEY = 'techTrackerData_v1';
+import useTechnologies from './hooks/useTechnologies';
 
 function App() {
-  const [technologies, setTechnologies] = useState([
-    {
-      id: 1,
-      title: 'React Components',
-      description: 'Изучение базовых компонентов',
-      status: 'not-started',
-      notes: '',
-    },
-    {
-      id: 2,
-      title: 'JSX Syntax',
-      description: 'Освоение синтаксиса JSX',
-      status: 'not-started',
-      notes: '',
-    },
-    {
-      id: 3,
-      title: 'State Management',
-      description: 'Работа с состоянием компонентов',
-      status: 'not-started',
-      notes: '',
-    },
-  ]);
+  const {
+    technologies,
+    updateStatus,
+    updateNotes,
+    markAllCompleted,
+    resetAllStatuses,
+    progress,
+  } = useTechnologies();
 
-  // Самостоятельная работа: поиск
+  // (поиск из 21-й можно оставить — он не мешает и полезен)
   const [searchQuery, setSearchQuery] = useState('');
 
-  // useEffect: загрузка из localStorage при старте
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setTechnologies(JSON.parse(saved));
-      } catch (_) {
-        // если вдруг данные битые — просто игнорим
-      }
-    }
-  }, []);
-
-  // useEffect: сохранение в localStorage при изменениях
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(technologies));
-  }, [technologies]);
-
-  // Циклическое обновление статуса
-  function updateStatus(id) {
-    setTechnologies((prev) =>
-      prev.map((tech) => {
-        if (tech.id !== id) return tech;
-
-        const nextStatus = {
-          'not-started': 'in-progress',
-          'in-progress': 'completed',
-          'completed': 'not-started',
-        };
-
-        return { ...tech, status: nextStatus[tech.status] };
-      })
-    );
-  }
-
-  // Обновление заметок (контролируемое поле)
-  function updateNotes(id, newNotes) {
-    setTechnologies((prev) =>
-      prev.map((tech) => (tech.id === id ? { ...tech, notes: newNotes } : tech))
-    );
-  }
-
-  // Фильтрация по поиску (title + description)
-  const filteredTechnologies = useMemo(() => {
+  const filtered = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return technologies;
-
     return technologies.filter(
       (t) =>
         t.title.toLowerCase().includes(q) ||
@@ -90,10 +34,16 @@ function App() {
 
   return (
     <div className="app">
-      <ProgressHeader technologies={technologies} />
+      <ProgressHeader technologies={technologies} progress={progress} />
+
       <Statistics technologies={technologies} />
 
-      {/* Поиск + количество найденных */}
+      <QuickActions
+        technologies={technologies}
+        onMarkAllCompleted={markAllCompleted}
+        onResetAll={resetAllStatuses}
+      />
+
       <div className="search">
         <input
           className="search__input"
@@ -102,11 +52,11 @@ function App() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <div className="search__count">Найдено: {filteredTechnologies.length}</div>
+        <div className="search__count">Найдено: {filtered.length}</div>
       </div>
 
       <section className="app__list">
-        {filteredTechnologies.map((tech) => (
+        {filtered.map((tech) => (
           <TechnologyCard
             key={tech.id}
             {...tech}

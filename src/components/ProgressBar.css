@@ -1,0 +1,21 @@
+.progressbar { display: grid; gap: 8px; }
+.progressbar__head { display: flex; justify-content: space-between; gap: 12px; }
+.progressbar__label { opacity: 0.9; }
+.progressbar__pct { opacity: 0.75; }
+
+.progressbar__outer {
+  width: 100%;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.progressbar__inner {
+  height: 100%;
+  border-radius: 999px;
+  background: #16a34a; /* зелёный как у тебя */
+}
+
+.progressbar__inner--animated {
+  transition: width 0.35s ease;
+}

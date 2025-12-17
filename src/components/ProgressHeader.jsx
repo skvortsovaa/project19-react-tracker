@@ -1,37 +1,24 @@
 // src/components/ProgressHeader.jsx
 import './ProgressHeader.css';
+import ProgressBar from './ProgressBar';
 
-function ProgressHeader({ technologies }) {
+function ProgressHeader({ technologies, progress }) {
   const total = technologies.length;
-  const completed = technologies.filter(
-    (tech) => tech.status === 'completed'
-  ).length;
-
-  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+  const completed = technologies.filter((t) => t.status === 'completed').length;
 
   return (
     <header className="progress-header">
-      <div className="progress-header__info">
-        <h1 className="progress-header__title">Трекер изучения технологий</h1>
-        <p className="progress-header__subtitle">
-          Всего технологий: <strong>{total}</strong> • Изучено:{' '}
-          <strong>{completed}</strong>
-        </p>
-      </div>
+      <h1 className="progress-header__title">Трекер изучения технологий</h1>
+      <p className="progress-header__subtitle">
+        Всего технологий: <b>{total}</b> · Изучено: <b>{completed}</b>
+      </p>
 
       <div className="progress-header__bar-wrapper">
-        <div className="progress-header__bar">
-          <div
-            className="progress-header__bar-fill"
-            style={{ width: `${percent}%` }}
-          />
-        </div>
-        <div className="progress-header__percent">
-          Прогресс: <strong>{percent}%</strong>
-        </div>
+        <ProgressBar progress={progress} label="Прогресс" height={10} />
       </div>
     </header>
   );
 }
 
 export default ProgressHeader;
+
