@@ -12,6 +12,8 @@ import useTechnologies from './hooks/useTechnologies';
 import ApiUsersPage from './pages/ApiUsersPage';
 import ApiTechnologySearchPage from './pages/ApiTechnologySearchPage';
 import RoadmapImportPage from './pages/RoadmapImportPage';
+import { useState } from 'react';
+import AppSnackbar from './components/AppSnackbar';
 
 
 
@@ -25,7 +27,19 @@ export default function App() {
     removeTechnology,
     resetAll,
     updateResources,
+    importTechnologies,
+    bulkSetStatus,
   } = useTechnologies();
+    const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'info',
+  });
+
+  const showSnackbar = (message, severity = 'info') => {
+    setSnackbar({ open: true, message, severity });
+  };
+
 
   return (
     <div className="app">
@@ -51,7 +65,21 @@ export default function App() {
 
           {/* самостоятельная */}
           <Route path="/statistics" element={<StatisticsPage technologies={technologies} />} />
-          <Route path="/settings" element={<SettingsPage resetAll={resetAll} />} />
+          
+          <Route
+            path="/settings"
+            element={
+              <SettingsPage
+                resetAll={resetAll}
+                technologies={technologies}
+                importTechnologies={importTechnologies}
+                bulkSetStatus={bulkSetStatus}
+                showSnackbar={showSnackbar} 
+              />
+            }
+          />
+
+
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/api-users" element={<ApiUsersPage />} />
           <Route path="/api-tech-search" element={<ApiTechnologySearchPage />} />
@@ -60,6 +88,13 @@ export default function App() {
 
         </Routes>
       </main>
+            <AppSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+      />
+
     </div>
   );
 }

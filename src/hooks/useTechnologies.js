@@ -91,6 +91,34 @@ export default function useTechnologies() {
     );
   };
 
+  const importTechnologies = (imported) => {
+  if (!Array.isArray(imported)) {
+    throw new Error('Неверный формат данных: ожидался массив');
+  }
+
+  // минимальная нормализация, чтобы не падало UI
+  const normalized = imported.map((t, idx) => ({
+    id: typeof t.id === 'number' ? t.id : Date.now() + idx,
+    title: String(t.title ?? '').trim() || `Technology ${idx + 1}`,
+    description: String(t.description ?? '').trim(),
+    status: t.status ?? STATUS.NOT_STARTED,
+    notes: t.notes ?? '',
+    category: t.category ?? 'frontend',
+    resources: Array.isArray(t.resources) ? t.resources : [],
+  }));
+
+  setTechnologies(normalized);
+};
+
+  const bulkSetStatus = (ids, status) => {
+    const idsSet = new Set(ids);
+    setTechnologies((prev) =>
+      prev.map((tech) =>
+        idsSet.has(tech.id) ? { ...tech, status } : tech
+      )
+    );
+  };
+
 
 
   return {
@@ -104,6 +132,8 @@ export default function useTechnologies() {
     resetAllStatuses,
     resetAll,
     updateResources,
+    importTechnologies,
+    bulkSetStatus,
     progress: calculateProgress(),
   };
 }
