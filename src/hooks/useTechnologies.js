@@ -53,10 +53,12 @@ export default function useTechnologies() {
       status: STATUS.NOT_STARTED,
       notes: '',
       category,
+      resources: [], // ✅ добавили
     };
     setTechnologies((prev) => [newTech, ...prev]);
     return newTech.id;
   };
+
 
   // удаление (нужно для страницы деталей)
   const removeTechnology = (techId) => {
@@ -72,7 +74,7 @@ export default function useTechnologies() {
     setTechnologies((prev) => prev.map((t) => ({ ...t, status: STATUS.NOT_STARTED })));
   };
 
-  // ✅ полный сброс к исходному набору (удобно для /settings)
+  // полный сброс к исходному набору (удобно для /settings)
   const resetAll = () => {
     setTechnologies(initialTechnologies);
   };
@@ -82,6 +84,14 @@ export default function useTechnologies() {
     const completed = technologies.filter((t) => t.status === STATUS.COMPLETED).length;
     return Math.round((completed / technologies.length) * 100);
   };
+
+  const updateResources = (id, resources) => {
+    setTechnologies(prev =>
+      prev.map(t => (t.id === id ? { ...t, resources } : t))
+    );
+  };
+
+
 
   return {
     technologies,
@@ -93,6 +103,7 @@ export default function useTechnologies() {
     markAllCompleted,
     resetAllStatuses,
     resetAll,
+    updateResources,
     progress: calculateProgress(),
   };
 }

@@ -2,15 +2,18 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
 import Navigation from './components/Navigation';
-
 import Home from './pages/Home';
 import TechnologyList from './pages/TechnologyList';
 import TechnologyDetail from './pages/TechnologyDetail';
 import AddTechnology from './pages/AddTechnology';
 import StatisticsPage from './pages/StatisticsPage';
 import SettingsPage from './pages/SettingsPage';
-
 import useTechnologies from './hooks/useTechnologies';
+import ApiUsersPage from './pages/ApiUsersPage';
+import ApiTechnologySearchPage from './pages/ApiTechnologySearchPage';
+import RoadmapImportPage from './pages/RoadmapImportPage';
+
+
 
 export default function App() {
   const {
@@ -21,6 +24,7 @@ export default function App() {
     addTechnology,
     removeTechnology,
     resetAll,
+    updateResources,
   } = useTechnologies();
 
   return (
@@ -39,6 +43,7 @@ export default function App() {
                 setStatus={setStatus}
                 updateNotes={updateNotes}
                 removeTechnology={removeTechnology}
+                updateResources={updateResources}
               />
             }
           />
@@ -47,8 +52,12 @@ export default function App() {
           {/* самостоятельная */}
           <Route path="/statistics" element={<StatisticsPage technologies={technologies} />} />
           <Route path="/settings" element={<SettingsPage resetAll={resetAll} />} />
-
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/api-users" element={<ApiUsersPage />} />
+          <Route path="/api-tech-search" element={<ApiTechnologySearchPage />} />
+          <Route path="/import-roadmaps" element={<RoadmapImportPage technologies={technologies} addTechnology={addTechnology}/>}/>
+
+
         </Routes>
       </main>
     </div>
