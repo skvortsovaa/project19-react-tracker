@@ -1,22 +1,23 @@
 /* src/components/ProgressHeader.css */
 
 .progress-header {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
 }
 
 .progress-header__title {
   margin: 0 0 4px;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text);
+
 }
 
 .progress-header__subtitle {
-  margin: 0;
-  color: #4b5563;
-  font-size: 0.95rem;
+  color: var(--muted);
 }
 
 .progress-header__bar-wrapper {
@@ -24,11 +25,12 @@
 }
 
 .progress-header__bar {
-  width: 100%;
-  height: 10px;
-  border-radius: 999px;
-  background-color: #e5e7eb;
-  overflow: hidden;
+  background: rgba(255,255,255,0.12);
+  body[data-theme="light"] .progress-header__bar {
+  background: rgba(0,0,0,0.08);
+}
+
+  border: 1px solid var(--border);
 }
 
 .progress-header__bar-fill {
@@ -41,5 +43,5 @@
 .progress-header__percent {
   margin-top: 6px;
   font-size: 0.85rem;
-  color: #374151;
+  ccolor: var(--muted);
 }

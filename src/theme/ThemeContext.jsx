@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useMemo, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -24,6 +24,10 @@ export function AppThemeProvider({ children }) {
     setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
+  useEffect(() => {
+    document.body.dataset.theme = mode;
+  }, [mode]);
+
   return (
     <ThemeModeContext.Provider value={{ mode, toggleTheme }}>
       <ThemeProvider theme={theme}>
@@ -33,3 +37,4 @@ export function AppThemeProvider({ children }) {
     </ThemeModeContext.Provider>
   );
 }
+

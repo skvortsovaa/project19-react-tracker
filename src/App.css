@@ -1,19 +1,67 @@
 /* src/App.css */
 
-.app {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 32px 16px 40px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    sans-serif;
-  color: #111827;
+/* ===== Theme variables (работают с body[data-theme="dark"]) ===== */
+:root{
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: rgba(0,0,0,0.03);
+  --text: #111827;
+  --muted: rgba(17,24,39,0.7);
+  --border: rgba(0,0,0,0.12);
+  --focus: rgba(59,130,246,0.55);
 }
 
-.app__list {
-  margin-top: 12px;
+body[data-theme="dark"]{
+  --bg: #0b0f19;
+  --surface: rgba(255,255,255,0.06);
+  --surface-2: rgba(255,255,255,0.08);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.72);
+  --border: rgba(255,255,255,0.18);
+  --focus: rgba(59,130,246,0.65);
 }
 
-.search {
+/* ===== Base ===== */
+body{
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: inherit;
+  background: transparent;
+}
+
+.page{
+  display: grid;
+  gap: 12px;
+}
+
+/* ===== Lists / grids ===== */
+.app__list{ margin-top: 12px; }
+
+.tech-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* ===== Cards / items ===== */
+.tech-item{
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: inherit;
+}
+
+/* ===== Search ===== */
+.search{
   display: flex;
   gap: 12px;
   align-items: center;
@@ -21,44 +69,82 @@
   flex-wrap: wrap;
 }
 
-.search__input {
+.search__input{
   min-width: 260px;
   padding: 10px 12px;
   border-radius: 10px;
 }
 
-.search__count {
+.search__count{
   opacity: 0.8;
+  color: var(--muted);
 }
 
-/* notes */
-.notes {
+/* ===== Notes ===== */
+.notes{
   margin-top: 12px;
   display: grid;
   gap: 8px;
 }
 
-.notes__title {
+.notes__title{
   margin: 0;
   font-size: 14px;
   opacity: 0.9;
 }
 
-.notes__textarea {
+.notes__textarea{
   width: 100%;
   padding: 10px 12px;
   border-radius: 12px;
   resize: vertical;
 }
 
-.notes__hint {
+.notes__hint{
   font-size: 12px;
   opacity: 0.75;
+  color: var(--muted);
 }
 
-.page { display: grid; gap: 12px; }
+/* ===== Inputs (чтобы не были белыми в dark) ===== */
+input, textarea, select{
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  outline: none;
+}
 
-.btn-primary {
+input:focus, textarea:focus, select:focus{
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* ===== Status ===== */
+.status{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: inherit;
+}
+
+.status-btn{
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.status-btn.active{
+  outline: 2px solid rgba(34,197,94,0.55);
+  outline-offset: 1px;
+}
+
+/* ===== Buttons / links ===== */
+.btn-primary{
   display: inline-block;
   padding: 10px 12px;
   border-radius: 12px;
@@ -69,7 +155,7 @@
   cursor: pointer;
 }
 
-.btn-danger {
+.btn-danger{
   padding: 10px 12px;
   border-radius: 12px;
   background: #ef4444;
@@ -78,19 +164,7 @@
   cursor: pointer;
 }
 
-.btn-link { text-decoration: none; color: #2563eb; }
-
-.tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.tech-item { padding: 12px; border: 1px solid rgba(0,0,0,0.12); border-radius: 14px; background: #fff; }
-
-.status { padding: 6px 10px; border-radius: 999px; font-size: 12px; border: 1px solid rgba(0,0,0,0.12); }
-
-.status-btn {
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.12);
-  background: #fff;
-  cursor: pointer;
+.btn-link{
+  text-decoration: none;
+  color: #2563eb;
 }
-.status-btn.active { outline: 2px solid rgba(34,197,94,0.55); }
-
